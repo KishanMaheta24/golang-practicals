@@ -9,7 +9,7 @@ type Employee struct {
 	Emp_id     int "gorm:primaryKey"
 	First_name string
 	Last_name  string
-	Birth_date time.Time
+	Birth_date time.Time "json:birth_date"
 	Sex        string
 	Salary     int
 	Super_id   int

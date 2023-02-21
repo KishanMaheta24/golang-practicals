@@ -3,9 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"models/models"
+	"net/http"
 	"os"
 )
 
@@ -23,6 +25,17 @@ func main() {
 	} else {
 		fmt.Println("successfully connected", db)
 	}
+	router := mux.NewRouter()
+
+	//specify endpoints, handler functions and HTTP method
+	router.HandleFunc("/", HealthCheck).Methods("GET")
+	router.HandleFunc("/getEmployees", getEmployees).Methods("GET")
+	router.HandleFunc("/addEmployees", addEmployees).Methods("POST")
+
+	http.Handle("/", router)
+
+	//start and listen to requests
+	http.ListenAndServe(":8080", router)
 	//db.Take("employee").AutoMigrate(&models.Employee{})
 	//fetchEmployee()
 	//fetchBranch()
@@ -32,6 +45,80 @@ func main() {
 	//grpBy()
 	//subqueryExample()
 	//joinsExamples()
+}
+
+func HealthCheck(w http.ResponseWriter, r *http.Request) {
+	//specify status code
+	w.WriteHeader(http.StatusOK)
+
+	//update response writer
+	fmt.Fprintf(w, "API is up and running")
+}
+
+func getEmployees(w http.ResponseWriter, request *http.Request) {
+	//var employees []models.Employee
+
+	//var response http.Response
+
+	//Retrieve person details
+	var employees []models.Employee
+
+	db.Table("employee").Find(&employees)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	//specify HTTP status code
+	w.WriteHeader(http.StatusOK)
+
+	//convert struct to JSON
+	jsonResponse, err := json.MarshalIndent(employees, "", "\t")
+	if err != nil {
+		return
+	} else {
+
+	}
+
+	//update response
+	w.Write(jsonResponse)
+}
+
+type Person struct {
+	Name string "json:name"
+	Id   string "json:id"
+}
+type Employee1 struct {
+	Emp_id     int "gorm:primaryKey"
+	First_name string
+	Last_name  string
+	Birth_date string "json:birth_date"
+	Sex        string
+	Salary     int
+	Super_id   int
+	Branch_id  int
+}
+
+func addEmployees(w http.ResponseWriter, r *http.Request) {
+
+	var e Employee1
+
+	err := json.NewDecoder(r.Body).Decode(&e)
+	w.Header().Set("Content-Type", "application/json")
+	//fmt.Println(e)
+	//w.WriteHeader(http.StatusOK)
+	if err != nil {
+		fmt.Fprintf(w, "error")
+	} else {
+		fmt.Println(e)
+		err := db.Table("employee").Create(&e)
+		if err != nil {
+			fmt.Println(err, "awsda")
+			fmt.Fprintf(w, "error occured")
+		} else {
+			fmt.Fprintf(w, "added")
+
+		}
+	}
+	//update response writer
 }
 
 func fetchEmployee() {
