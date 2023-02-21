@@ -29,14 +29,13 @@ type Client struct {
 	Branch_id   int
 }
 type Works_With struct {
-	gorm.Model
 	Emp_id      int "gorm:primaryKey"
 	Client_id   int "gorm:primaryKey"
 	Total_sales int
 }
 
 type Branch_suppliers struct {
-	gorm.Model
+	//gorm.Model
 	Branch_id     int    "gorm:primaryKey"
 	Supplier_name string "gorm:primaryKey"
 	Supply_type   string

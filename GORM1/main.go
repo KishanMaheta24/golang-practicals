@@ -29,7 +29,9 @@ func main() {
 	//fetchEmployeeDateOrderBySN()
 	//findBornAfter1969()
 	//inCondition()
-	grpBy()
+	//grpBy()
+	//subqueryExample()
+	//joinsExamples()
 }
 
 func fetchEmployee() {
@@ -79,11 +81,39 @@ func pretty(employee []models.Employee) {
 
 func grpBy() {
 	var work []models.Works_With
-	db.Table("works_with").Select("client_id,SUM(total_sales) as total").Group("client_id").Where("client_id IS NOT NULL").Find(&work)
+	db.Table("works_with").Select("client_id,sum(total_sales) as Total_sales").Group("client_id").Find(&work)
 	js, err := json.MarshalIndent(work, "", "\t")
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println(string(js))
+	}
+}
+
+func subqueryExample() {
+	var works []models.Works_With
+
+	db.Table("works_with").Where("total_sales > (?)", db.Table("works_with").Select("AVG(total_sales)")).Find(&works)
+
+	js, err := json.MarshalIndent(works, "", "\t")
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(string(js))
+	}
+}
+
+func joinsExamples() {
+	type temp struct {
+		Emp_id      int
+		First_name  string
+		Branch_name string
+	}
+	var tmp []temp
+	db.Table("employee").Select("emp_id,first_name,branch.branch_name as branch_name").Joins("inner join branch on employee.emp_id=branch.mgr_id").Find(&tmp)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(tmp)
 	}
 }
