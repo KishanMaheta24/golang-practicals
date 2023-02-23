@@ -103,20 +103,19 @@ func addEmployees(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&e)
 	w.Header().Set("Content-Type", "application/json")
-	//fmt.Println(e)
-	//w.WriteHeader(http.StatusOK)
+
 	if err != nil {
 		fmt.Fprintf(w, "error")
 	} else {
 		fmt.Println(e)
-		err := db.Table("employee").Create(&e)
-		if err != nil {
-			fmt.Println(err, "awsda")
-			fmt.Fprintf(w, "error occured")
-		} else {
-			fmt.Fprintf(w, "added")
-
-		}
+		//err := db.Table("employee").Create(&e)
+		//if err != nil {
+		//	fmt.Println(err, "awsda")
+		//	fmt.Fprintf(w, "error occured")
+		//} else {
+		//	fmt.Fprintf(w, "added")
+		//
+		//}
 	}
 	//update response writer
 }
