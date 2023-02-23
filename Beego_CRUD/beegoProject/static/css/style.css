@@ -11,10 +11,25 @@
 
 
 .description{
-    background-color: aquamarine;
+    background-color:darkgrey;
+    padding: 1rem;
+}
+
+.description>form{
+    width: 100%;
+    text-align: center;
 }
 
 form>input{
     margin-top: 0.5rem;
+}
 
+input,select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }

@@ -5,7 +5,7 @@ type User_details struct {
 	Name      string `form:"name,text,name"`
 	Email     string `form:"email,email,email"`
 	Password  string `form:"password,password,password"`
-	Contact   int    `form:"contact,number,contact"valid:"MinSize(10);MaxSize(10)"`
+	Contact   int64  `form:"contact,number,contact"`
 	TechStack string `form:"stack,text,stack"`
 }
 
