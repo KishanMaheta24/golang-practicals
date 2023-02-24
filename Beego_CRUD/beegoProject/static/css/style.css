@@ -18,6 +18,7 @@
 .description>form{
     width: 100%;
     text-align: center;
+    margin-top: 0.5rem;
 }
 
 form>input{
@@ -32,4 +33,9 @@ input,select {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+.title1{
+    background-color: honeydew;
+    padding:0.5rem
 }

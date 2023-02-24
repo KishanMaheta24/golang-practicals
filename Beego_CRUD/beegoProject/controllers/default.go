@@ -59,3 +59,87 @@ func (c *MainController) Add() {
 	}
 
 }
+
+func (c *MainController) Search() {
+	c.TplName = "search.tpl"
+
+	flash := beego.ReadFromRequest(&c.Controller)
+	if ok := flash.Data["error"]; ok != "" {
+		c.Data["flash"] = ok
+	}
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	if c.Ctx.Input.Method() == "POST" {
+		name := c.GetString("name")
+		fmt.Println("name:", name)
+
+		if name == "" {
+			flash.Notice("please enter name")
+			flash.Store(&c.Controller)
+		} else {
+			res := models.User_details{}
+			qs := o.QueryTable("user_details")
+			_, err := qs.Filter("name", name).All(&res)
+			if err != nil {
+				fmt.Println("error:", err)
+			} else {
+				//res, err := json.Marshal(res)
+				if err != nil {
+
+					flash.Notice("error")
+					flash.Store(&c.Controller)
+				} else {
+					c.Data["user"] = res
+
+					fmt.Println(res)
+				}
+
+			}
+		}
+	}
+
+}
+
+func (c *MainController) Delete() {
+	c.TplName = "delete.tpl"
+
+	flash := beego.ReadFromRequest(&c.Controller)
+	if ok := flash.Data["error"]; ok != "" {
+		c.Data["flash"] = ok
+	}
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	if c.Ctx.Input.Method() == "POST" {
+		name := c.GetString("name")
+		fmt.Println("name:", name)
+
+		if name == "" {
+			flash.Notice("please enter ID")
+			flash.Store(&c.Controller)
+		} else {
+			res := models.User_details{}
+			res.Name = name
+			_, err := o.Delete(&res)
+			if err != nil {
+				fmt.Println("error:", err)
+			} else {
+				//res, err := json.Marshal(res)
+				if err != nil {
+
+					flash.Notice("error")
+					flash.Store(&c.Controller)
+				} else {
+					c.Data["user"] = "record deleted successfully"
+
+					fmt.Println(res)
+				}
+
+			}
+		}
+	}
+
+}
