@@ -7,6 +7,7 @@ import (
 	"github.com/beego/beego/v2/adapter/validation"
 	"github.com/beego/beego/v2/core/logs"
 	beego "github.com/beego/beego/v2/server/web"
+	"strconv"
 )
 
 type MainController struct {
@@ -114,16 +115,17 @@ func (c *MainController) Delete() {
 	o.Using("default")
 
 	if c.Ctx.Input.Method() == "POST" {
-		name := c.GetString("name")
-		fmt.Println("name:", name)
+		id := c.GetString("name")
+		fmt.Println("name:", id)
 
-		if name == "" {
+		if id == "" {
 			flash.Notice("please enter ID")
 			flash.Store(&c.Controller)
 		} else {
 			res := models.User_details{}
-			res.Name = name
-			_, err := o.Delete(&res)
+			temp, err := strconv.Atoi(id)
+			res.Id = temp
+			resp, err := o.Delete(&res)
 			if err != nil {
 				fmt.Println("error:", err)
 			} else {
@@ -133,8 +135,7 @@ func (c *MainController) Delete() {
 					flash.Notice("error")
 					flash.Store(&c.Controller)
 				} else {
-					c.Data["user"] = "record deleted successfully"
-
+					c.Data["user"] = "record deleted successfully" + string(resp)
 					fmt.Println(res)
 				}
 

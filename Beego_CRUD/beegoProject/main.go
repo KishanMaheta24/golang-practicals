@@ -14,7 +14,7 @@ func init() {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println("driver successfyull")
+		fmt.Println("driver successful")
 	}
 	err = orm.RegisterDataBase("default",
 		"postgres",
@@ -22,14 +22,14 @@ func init() {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println("connection successfyull")
+		fmt.Println("connection successful")
 	}
 	orm.RegisterModel(new(models.User_details))
 	err = orm.RunSyncdb("default", false, true)
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println("sync successfyull")
+		fmt.Println("sync successful")
 	}
 
 }

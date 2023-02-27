@@ -1,0 +1,2 @@
+192.168.1.50 www.yourdomain.com /etc/hosts
+192.168.1.50 localhost /etc/hosts
