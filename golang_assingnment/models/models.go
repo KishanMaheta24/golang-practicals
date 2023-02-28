@@ -41,11 +41,11 @@ func DepositMoney(obj *UserDetails, ToBeDeposit string) {
 		fmt.Println("Cannot enter amount in Float Values,Please Enter Whole values only!")
 	} else if err != nil {
 		fmt.Println("error Occured: Please enter Valid Amount")
-	} else if deposit < 0 {
+	} else if deposit < 0 || deposit == 0 || deposit == -0 {
 		fmt.Println("Please enter valid amount")
 	} else if (deposit % 500) != 0 {
 		fmt.Println("Please Enter Money in Multiple of [500] ")
-	} else if deposit >= MAX_LIMIT_DEP {
+	} else if deposit > MAX_LIMIT_DEP {
 		fmt.Println("Sorry, You Cannot Deposit More Than ", MAX_LIMIT_DEP, " in Single Transaction")
 	} else {
 		obj.Balance += deposit
@@ -64,7 +64,7 @@ func WithdrawMoney(obj *UserDetails, ToBeWithdrawn string) {
 		fmt.Println("Cannot enter amount in Float Values,Please Enter Whole values only!")
 	} else if err != nil {
 		fmt.Println("error Occured:", "Please enter Valid Amount")
-	} else if withdraw < 0 {
+	} else if withdraw <= 0 || withdraw == -0 {
 		fmt.Println("Please enter valid amount")
 	} else if withdraw%500 != 0 {
 		fmt.Println("Please Enter Money in Multiple of [500]")
